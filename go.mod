@@ -1,4 +1,4 @@
-module zstack-sdk-go-v3
+module github.com/gzxgogh/zstack-sdk-go-v3
 
 go 1.17
 
