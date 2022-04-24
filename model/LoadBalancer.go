@@ -150,13 +150,13 @@ type ChangeLoadBalancerListenerRequest struct {
 }
 
 type ChangeLoadBalancerListenerParams struct {
-	ConnectionIdleTimeout string `json:"connectionIdleTimeout,omitempty" bson:"connectionIdleTimeout,omitempty"`
-	MaxConnection         string `json:"maxConnection,omitempty" bson:"maxConnection,omitempty"`
+	ConnectionIdleTimeout int    `json:"connectionIdleTimeout,omitempty" bson:"connectionIdleTimeout,omitempty"`
+	MaxConnection         int    `json:"maxConnection,omitempty" bson:"maxConnection,omitempty"`
 	BalancerAlgorithm     string `json:"balancer_algorithm,omitempty" bson:"balancer_algorithm,omitempty"` //roundrobin,leastconn,source
 	HealthCheckTarget     string `json:"healthCheckTarget,omitempty" bson:"healthCheckTarget,omitempty"`
-	HealthyThreshold      string `json:"healthyThreshold,omitempty" bson:"healthyThreshold,omitempty"`
-	UnhealthyThreshold    string `json:"unhealthyThreshold,omitempty" bson:"unhealthyThreshold,omitempty"`
-	HealthCheckInterval   string `json:"healthCheckInterval,omitempty" bson:"healthCheckInterval,omitempty"`
+	HealthyThreshold      int    `json:"healthyThreshold,omitempty" bson:"healthyThreshold,omitempty"`
+	UnhealthyThreshold    int    `json:"unhealthyThreshold,omitempty" bson:"unhealthyThreshold,omitempty"`
+	HealthCheckInterval   int    `json:"healthCheckInterval,omitempty" bson:"healthCheckInterval,omitempty"`
 	HealthCheckProtocol   string `json:"healthCheckProtocol,omitempty" bson:"healthCheckProtocol,omitempty"` //健康检查协议:tcp,udp,HTTP
 	HealthCheckMethod     string `json:"healthCheckMethod,omitempty" bson:"healthCheckMethod,omitempty"`     //健康检查方法:GET,HEAD
 	HealthCheckURI        string `json:"healthCheckURI,omitempty" bson:"healthCheckURI,omitempty"`           //健康检查的URI
@@ -308,8 +308,8 @@ type RemoveCertificateFromLoadBalancerListenerRequest struct {
 }
 
 type RemoveCertificateFromLoadBalancerListenerResponse struct {
-	Inventory PortForwardingRuleInventory `json:"inventory" bson:"inventory"`
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory LoadBalancerListenerInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode                     `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //更新证书信息

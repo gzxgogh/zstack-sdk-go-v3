@@ -120,8 +120,12 @@ type QueryLdapBindingResponse struct {
 //清理无效的AD/LDAP绑定
 type CleanInvalidLdapBindingRequest struct {
 	ReqConfig
-	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	CleanInvalidLdapBinding CleanInvalidLdapBindingParams `json:"cleanInvalidLdapBinding" bson:"cleanInvalidLdapBinding"`
+	SystemTags              []string                      `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags                []string                      `json:"userTags,omitempty" bson:"userTags,omitempty"`
+}
+
+type CleanInvalidLdapBindingParams struct {
 }
 
 type CleanInvalidLdapBindingResponse struct {

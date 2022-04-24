@@ -187,8 +187,8 @@ type UpdateScsiLunRequest struct {
 }
 
 type UpdateScsiLunParams struct {
-	Name  string `json:"name" bson:"name"`   //资源名称
-	State string `json:"state" bson:"state"` //启用状态
+	Name  string `json:"name,omitempty" bson:"name,omitempty"`   //资源名称
+	State string `json:"state,omitempty" bson:"state,omitempty"` //启用状态
 }
 
 type UpdateScsiLunResponse struct {
@@ -207,7 +207,7 @@ type AttachScsiLunToVmInstanceRequest struct {
 }
 
 type AttachScsiLunToVmInstanceParams struct {
-	DisableMultiPathAttach bool `json:"disableMultiPathAttach " bson:"disableMultiPathAttach "` //资源名称
+	DisableMultiPathAttach string `json:"disableMultiPathAttach " bson:"disableMultiPathAttach "` //资源名称
 }
 
 type AttachScsiLunToVmInstanceResponse struct {

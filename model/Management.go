@@ -39,7 +39,7 @@ type ReconnectConsoleProxyAgentRequest struct {
 }
 
 type ReconnectConsoleProxyAgentParams struct {
-	AgentUuids []string `json:"agent_uuids" bson:"agent_uuids"`
+	AgentUuids []string `json:"agentUuids" bson:"agentUuids"`
 }
 
 type ReconnectConsoleProxyAgentResponse struct {
@@ -295,7 +295,7 @@ type UpdateLogConfigurationRequest struct {
 
 type UpdateLogConfigurationParams struct {
 	ConfigId    int64  `json:"configId" bson:"configId"`                           //资源的UUID，唯一标示该资源
-	Name        string `json:"name" bson:"name"`                                   //资源名称
+	Name        string `json:"name,omitempty" bson:"name,omitempty"`               //资源名称
 	Description string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 }
 

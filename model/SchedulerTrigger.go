@@ -84,7 +84,7 @@ type AddSchedulerJobToSchedulerTriggerRequest struct {
 }
 
 type AddSchedulerJobToSchedulerTriggerParams struct {
-	TriggerNow bool `json:"triggerNow ,omitempty" bson:"triggerNow ,omitempty"`
+	TriggerNow bool `json:"triggerNow,omitempty" bson:"triggerNow,omitempty"`
 }
 
 type AddSchedulerJobToSchedulerTriggerResponse struct {

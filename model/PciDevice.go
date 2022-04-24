@@ -48,7 +48,8 @@ type DeletePciDeviceResponse struct {
 //获取PCI设备列表
 type GetPciDeviceCandidatesForAttachingVmRequest struct {
 	ReqConfig
-	VmInstanceUuid string   `json:"vmInstanceUuid" bson:"vmInstanceUuid"`             //云主机UUID
+	VmInstanceUuid string   `json:"vmInstanceUuid" bson:"vmInstanceUuid"` //云主机UUID
+	Types          []string `json:"types" bson:"types"`
 	SystemTags     []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags       []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
@@ -89,8 +90,8 @@ type AttachPciDeviceToVmParams struct {
 }
 
 type AttachPciDeviceToVmResponse struct {
-	Inventory []PciDeviceInventory `json:"inventory" bson:"inventory"`
-	Error     ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory PciDeviceInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode          `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //卸载PCI设备
@@ -103,8 +104,8 @@ type DetachPciDeviceFromVmRequest struct {
 }
 
 type DetachPciDeviceFromVmResponse struct {
-	Inventory []PciDeviceInventory `json:"inventory" bson:"inventory"`
-	Error     ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory PciDeviceInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode          `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //创建PCI设备规格
@@ -198,23 +199,22 @@ type UpdateHostIommuStateParams struct {
 }
 
 type UpdateHostIommuStateResponse struct {
-	Error  ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Status string    `json:"status" bson:"status"`
+	Error ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	State string    `json:"state" bson:"state"`
 }
 
 //获取物理机lommu就绪状态
 type GetHostIommuStateRequest struct {
 	ReqConfig
-	Uuid                 string                     `json:"uuid" bson:"uuid"`
-	UpdateHostIommuState UpdateHostIommuStateParams `json:"updateHostIommuState" bson:"updateHostIommuState"`
-	SystemTags           []string                   `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags             []string                   `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	Uuid       string   `json:"uuid" bson:"uuid"`
+	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type GetHostIommuStateResponse struct {
 	Success bool      `json:"success" bson:"success"`
 	Error   ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Status  string    `json:"status" bson:"status"`
+	State   string    `json:"state" bson:"state"`
 }
 
 //将PCI设备规格加载到云主机
@@ -259,7 +259,7 @@ type UpdatePciDeviceSpecRequest struct {
 }
 
 type UpdatePciDeviceSpecParams struct {
-	Name           string `json:"name" bson:"name"`                                         //名称
+	Name           string `json:"name,omitempty" bson:"name,omitempty"`                     //名称
 	Description    string `json:"description,omitempty" bson:"description,omitempty"`       //详细描述
 	RomContent     string `json:"romContent,omitempty" bson:"romContent,omitempty"`         //BASE64编码后的固件内容
 	RomVersion     string `json:"romVersion,omitempty" bson:"romVersion,omitempty"`         //固件版本
@@ -454,8 +454,8 @@ type GetMdevDeviceCandidatesRequest struct {
 }
 
 type GetMdevDeviceCandidatesResponse struct {
-	Error     ErrorCode           `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory MdevDeviceInventory `json:"inventory" bson:"inventory"`
+	Error       ErrorCode             `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []MdevDeviceInventory `json:"inventories" bson:"inventories"`
 }
 
 //查询PCI设备切分出的MDEV设备
@@ -467,8 +467,8 @@ type QueryMdevDeviceRequest struct {
 }
 
 type QueryMdevDeviceResponse struct {
-	Error     ErrorCode           `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory MdevDeviceInventory `json:"inventory" bson:"inventory"`
+	Error       ErrorCode             `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []MdevDeviceInventory `json:"inventories" bson:"inventories"`
 }
 
 //将MDEV设备规格加载到云主机
@@ -482,7 +482,7 @@ type AddMdevDeviceSpecToVmInstanceRequest struct {
 }
 
 type AddMdevDeviceSpecToVmInstanceParams struct {
-	MdevDeviceNumber string `json:"mdevDeviceNumber " bson:"mdevDeviceNumber "`
+	MdevDeviceNumber int `json:"mdevDeviceNumber " bson:"mdevDeviceNumber "`
 }
 
 type AddMdevDeviceSpecToVmInstanceResponse struct {

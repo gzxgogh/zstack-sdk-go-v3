@@ -162,8 +162,8 @@ type QueryVRouterRouteTableRequest struct {
 }
 
 type QueryVRouterRouteTableResponse struct {
-	Inventories VRouterRouteTableInventory `json:"inventories" bson:"inventories"`
-	Error       ErrorCode                  `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []VRouterRouteTableInventory `json:"inventories" bson:"inventories"`
+	Error       ErrorCode                    `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //获取路由器实时路由表

@@ -94,11 +94,11 @@ type UpdateClusterOSRequest struct {
 }
 
 type UpdateClusterOSParams struct {
-	ExcludePackages []string `json:"excludePackages " bson:"excludePackages "`             //不升级的包列表
-	UpdatePackages  []string `json:"updatePackages " bson:"updatePackages "`               //要升级的包列表
-	ReleaseVersion  string   `json:"releaseVersion" bson:"releaseVersion"`                 //升级所用源的版
-	ResourceUuid    string   `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //用户指定的资源uuid
-	TagUuids        []string `json:"tagUuids " bson:"tagUuids "`                           //标签UUID列表
+	ExcludePackages []string `json:"excludePackages,omitempty" bson:"excludePackages,omitempty"` //不升级的包列表
+	UpdatePackages  []string `json:"updatePackages,omitempty" bson:"updatePackages,omitempty"`   //要升级的包列表
+	ReleaseVersion  string   `json:"releaseVersion,omitempty" bson:"releaseVersion,omitempty"`   //升级所用源的版
+	ResourceUuid    string   `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"`       //用户指定的资源uuid
+	TagUuids        []string `json:"tagUuids,omitempty" bson:"tagUuids,omitempty"`               //标签UUID列表
 }
 
 type UpdateClusterOSResponse struct {

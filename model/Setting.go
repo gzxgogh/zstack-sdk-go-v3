@@ -192,9 +192,10 @@ type QueryTemplateConfigResponse struct {
 //更新模板值
 type UpdateTemplateConfigRequest struct {
 	ReqConfig
-	TemplateUuid string   `json:"templateUuid" bson:"templateUuid"`                 //模板Uuid
-	SystemTags   []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags     []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	TemplateUuid         string                     `json:"templateUuid" bson:"templateUuid"` //模板Uuid
+	UpdateTemplateConfig UpdateTemplateConfigParams `json:"updateTemplateConfig" bson:"updateTemplateConfig"`
+	SystemTags           []string                   `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags             []string                   `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type UpdateTemplateConfigParams struct {
@@ -211,9 +212,13 @@ type UpdateTemplateConfigResponse struct {
 //重置模板到初始状态
 type ResetTemplateConfigRequest struct {
 	ReqConfig
-	TemplateUuid string   `json:"templateUuid" bson:"templateUuid"`                 //模板Uuid
-	SystemTags   []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags     []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	TemplateUuid        string                    `json:"templateUuid" bson:"templateUuid"` //模板Uuid
+	ResetTemplateConfig ResetTemplateConfigParams `json:"resetTemplateConfig" bson:"resetTemplateConfig"`
+	SystemTags          []string                  `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags            []string                  `json:"userTags,omitempty" bson:"userTags,omitempty"`
+}
+
+type ResetTemplateConfigParams struct {
 }
 
 type ResetTemplateConfigResponse struct {

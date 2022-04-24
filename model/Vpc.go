@@ -46,8 +46,8 @@ type GetAttachableVpcL3NetworkParams struct {
 }
 
 type GetAttachableVpcL3NetworkResponse struct {
-	Inventories VpcRouterVmInventory `json:"inventories" bson:"inventories"`
-	Error       ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []VpcRouterVmInventory `json:"inventories" bson:"inventories"`
+	Error       ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //获取实时流量状态
@@ -59,8 +59,8 @@ type GetVpcVRouterDistributedRoutingConnectionsRequest struct {
 }
 
 type GetVpcVRouterDistributedRoutingConnectionsResponse struct {
-	Inventories VpcRouterVmInventory `json:"inventories" bson:"inventories"`
-	Error       ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories map[string]interface{} `json:"inventories" bson:"inventories"`
+	Error       ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //获取分布式路由是否打开
@@ -170,7 +170,7 @@ type ChangeVpcHaGroupMonitorIpsRequest struct {
 }
 
 type ChangeVpcHaGroupMonitorIpsParams struct {
-	MonitorIps string `json:"monitorIps " bson:"monitorIps "` //
+	MonitorIps []string `json:"monitorIps " bson:"monitorIps "` //
 }
 
 type ChangeVpcHaGroupMonitorIpsResponse struct {
@@ -264,28 +264,43 @@ type UpdateVirtualRouterResponse struct {
 }
 
 type VpcRouterVmInventory struct {
-	UUID                 string     `json:"uuid" bson:"uuid"`                                   //资源的UUID，唯一标示该资源
-	Name                 string     `json:"name" bson:"name"`                                   //资源名称
-	Description          string     `json:"description" bson:"description"`                     //资源的详细描述
-	ZoneUuid             string     `json:"zoneUuid,omitempty" bson:"zoneUuid,omitempty"`       //区域UUID 若指定，云主机会在指定区域创建。
-	ClusterUUID          string     `json:"clusterUuid,omitempty" bson:"clusterUuid,omitempty"` //集群UUID 若指定，云主机会在指定集群创建，该字段优先级高于zoneUuid。
-	ImageUUID            string     `json:"imageUuid" bson:"imageUuid"`                         //镜像UUID 云主机的根云盘会从该字段指定的镜像创建。
-	HostUuid             string     `json:"hostUuid" bson:"hostUuid"`                           //物理机UUID
-	LastHostUUID         string     `json:"lastHostUuid" bson:"lastHostUuid"`                   //上一次运行云主机的物理机UUID
-	InstanceOfferingUUID string     `json:"instanceOfferingUuid" bson:"instanceOfferingUuid"`   //计算规格UUID 指定云主机的CPU、内存等参数。
-	RootVolumeUuid       string     `json:"rootVolumeUuid" bson:"rootVolumeUuid"`
-	Platform             string     `json:"platform" bson:"platform"`
-	DefaultL3NetworkUuid string     `json:"defaultL3NetworkUuid" bson:"defaultL3NetworkUuid"`
-	Type                 string     `json:"type" bson:"type"`
-	HypervisorType       string     `json:"hypervisorType" bson:"hypervisorType"` //虚拟机管理程序类型,KVM Simulator
-	MemorySize           int64      `json:"memorySize" bson:"memorySize"`         //内存大小
-	CPUNum               int        `json:"cpuNum" bson:"cpuNum"`                 //cpu数量
-	CPUSpeed             int64      `json:"cpuSpeed" bson:"cpuSpeed"`             //cpu主频
-	AllocatorStrategy    string     `json:"allocatorStrategy,omitempty" bson:"allocatorStrategy,omitempty"`
-	CreateDate           string     `json:"createDate" bson:"createDate"` //创建时间
-	LastOpDate           string     `json:"lastOpDate" bson:"lastOpDate"` //最后一次修改时间
-	VMNics               []VmNic    `json:"vmNics" bson:"vmNics"`         //所有网卡信息
-	AllVolumes           []VmVolume `json:"allVolumes" bson:"allVolumes"` //所有卷
+	PublicNetworkUuid         string            `json:"publicNetworkUuid" bson:"publicNetworkUuid"`
+	VirtualRouterVips         []string          `json:"virtualRouterVips" bson:"virtualRouterVips"`
+	ApplianceVmType           string            `json:"applianceVmType" bson:"applianceVmType"`
+	ManagementNetworkUuid     string            `json:"managementNetworkUuid" bson:"managementNetworkUuid"`
+	DefaultRouteL3NetworkUuid string            `json:"defaultRouteL3NetworkUuid" bson:"defaultRouteL3NetworkUuid"`
+	Status                    string            `json:"status" bson:"status"`
+	AgentPort                 int               `json:"agentPort" bson:"agentPort"`
+	UUID                      string            `json:"uuid" bson:"uuid"`                                   //资源的UUID，唯一标示该资源
+	Name                      string            `json:"name" bson:"name"`                                   //资源名称
+	Description               string            `json:"description" bson:"description"`                     //资源的详细描述
+	ZoneUuid                  string            `json:"zoneUuid,omitempty" bson:"zoneUuid,omitempty"`       //区域UUID 若指定，云主机会在指定区域创建。
+	ClusterUUID               string            `json:"clusterUuid,omitempty" bson:"clusterUuid,omitempty"` //集群UUID 若指定，云主机会在指定集群创建，该字段优先级高于zoneUuid。
+	ImageUUID                 string            `json:"imageUuid" bson:"imageUuid"`                         //镜像UUID 云主机的根云盘会从该字段指定的镜像创建。
+	HostUuid                  string            `json:"hostUuid" bson:"hostUuid"`                           //物理机UUID
+	LastHostUUID              string            `json:"lastHostUuid" bson:"lastHostUuid"`                   //上一次运行云主机的物理机UUID
+	InstanceOfferingUUID      string            `json:"instanceOfferingUuid" bson:"instanceOfferingUuid"`   //计算规格UUID 指定云主机的CPU、内存等参数。
+	RootVolumeUuid            string            `json:"rootVolumeUuid" bson:"rootVolumeUuid"`
+	Platform                  string            `json:"platform" bson:"platform"`
+	DefaultL3NetworkUuid      string            `json:"defaultL3NetworkUuid" bson:"defaultL3NetworkUuid"`
+	Type                      string            `json:"type" bson:"type"`
+	HypervisorType            string            `json:"hypervisorType" bson:"hypervisorType"` //虚拟机管理程序类型,KVM Simulator
+	MemorySize                int64             `json:"memorySize" bson:"memorySize"`         //内存大小
+	CPUNum                    int               `json:"cpuNum" bson:"cpuNum"`                 //cpu数量
+	CPUSpeed                  int64             `json:"cpuSpeed" bson:"cpuSpeed"`             //cpu主频
+	AllocatorStrategy         string            `json:"allocatorStrategy,omitempty" bson:"allocatorStrategy,omitempty"`
+	CreateDate                string            `json:"createDate" bson:"createDate"` //创建时间
+	LastOpDate                string            `json:"lastOpDate" bson:"lastOpDate"` //最后一次修改时间
+	VMNics                    []VmNicInventory  `json:"vmNics" bson:"vmNics"`         //所有网卡信息
+	AllVolumes                []VolumeInventory `json:"allVolumes" bson:"allVolumes"` //所有卷
+	Dns                       []Dns             `json:"dns" bson:"dns"`
+}
+
+type Dns struct {
+	VpcRouterUuid string `json:"vpcRouterUuid" bson:"vpcRouterUuid"`
+	Dns           string `json:"dns" bson:"dns"`
+	CreateDate    string `json:"createDate" bson:"createDate"` //创建时间
+	LastOpDate    string `json:"lastOpDate" bson:"lastOpDate"` //最后一次修改时间
 }
 
 type VpcHaGroupInventory struct {

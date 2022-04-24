@@ -361,8 +361,8 @@ type GetVmAttachableDataVolumeRequest struct {
 }
 
 type GetVmAttachableDataVolumeResponse struct {
-	Inventories []VmInventories `json:"inventories" bson:"inventories"` //
-	Success     bool            `json:"success" bson:"success"`         //结果信息
+	Inventories []VolumeInventory `json:"inventories" bson:"inventories"` //
+	Success     bool              `json:"success" bson:"success"`         //结果信息
 }
 
 //获取云主机可加载L3网络列表
@@ -374,8 +374,8 @@ type GetVmAttachableL3NetworkRequest struct {
 }
 
 type GetVmAttachableL3NetworkResponse struct {
-	Inventories []VmInventories `json:"inventories" bson:"inventories"`         //
-	Error       ErrorCode       `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []L3NetworkInventory `json:"inventories" bson:"inventories"`         //
+	Error       ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //加载L3网络到云主机
@@ -482,24 +482,16 @@ type SetNicQoSResponse struct {
 //获取云主机网卡限速
 type GetNicQoSRequest struct {
 	ReqConfig
-	Uuid              string          `json:"uuid" bson:"uuid"`
-	SetNicQos         GetNicQoSParams `json:"setNicQos" bson:"setNicQos"`                       //存出流量带宽限制，入流量带宽限制
-	OutboundBandwidth string          `json:"outboundBandwidth" bson:"outboundBandwidth"`       //出流量带宽限制
-	InboundBandwidth  string          `json:"inboundBandwidth" bson:"inboundBandwidth"`         //入流量带宽限制
-	SystemTags        []string        `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags          []string        `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
-}
-
-type GetNicQoSParams struct {
-	OutboundBandwidth string `json:"outboundBandwidth" bson:"outboundBandwidth"` //出流量带宽限制
-	InboundBandwidth  string `json:"inboundBandwidth" bson:"inboundBandwidth"`   //入流量带宽限制
+	Uuid       string   `json:"uuid" bson:"uuid"`
+	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
 
 type GetNicQoSResponse struct {
-	OutboundBandwidth            string    `json:"outboundBandwidth" bson:"outboundBandwidth"` //出流量带宽限制
-	InboundBandwidth             string    `json:"inboundBandwidth" bson:"inboundBandwidth"`   //入流量带宽限制
-	OutboundBandwidthUpthreshold string    `json:"outboundBandwidthUpthreshold" bson:"outboundBandwidthUpthreshold"`
-	InboundBandwidthUpthreshold  string    `json:"inboundBandwidthUpthreshold" bson:"inboundBandwidthUpthreshold"`
+	OutboundBandwidth            int64     `json:"outboundBandwidth" bson:"outboundBandwidth"` //出流量带宽限制
+	InboundBandwidth             int64     `json:"inboundBandwidth" bson:"inboundBandwidth"`   //入流量带宽限制
+	OutboundBandwidthUpthreshold int64     `json:"outboundBandwidthUpthreshold" bson:"outboundBandwidthUpthreshold"`
+	InboundBandwidthUpthreshold  int64     `json:"inboundBandwidthUpthreshold" bson:"inboundBandwidthUpthreshold"`
 	Success                      bool      `json:"success" bson:"success"`
 	Error                        ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
@@ -533,8 +525,8 @@ type GetInterdependentL3NetworksImagesRequest struct {
 }
 
 type GetInterdependentL3NetworksImagesResponse struct {
-	Inventories []VmInventories `json:"inventories" bson:"inventories"`         //云主机详细清单
-	Error       ErrorCode       `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []L3NetworkInventory `json:"inventories" bson:"inventories"`         //云主机详细清单
+	Error       ErrorCode            `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //设置云主机SSH Key
@@ -687,7 +679,8 @@ type GetVmHostnameRequest struct {
 }
 
 type GetVmHostnameResponse struct {
-	Hostname string `json:"hostname" bson:"hostname"` //hostname，必须符合RFC 1123标准
+	Hostname string    `json:"hostname" bson:"hostname"`               //hostname，必须符合RFC 1123标准
+	Error    ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //删除云主机Hostname
@@ -896,16 +889,20 @@ type GetVmCapabilitiesResponse struct {
 //更新云主机信息
 type UpdateVmInstanceRequest struct {
 	ReqConfig
-	UUID                 string   `json:"uuid" bson:"uuid"`                                   //资源的UUID，唯一标示该资源
-	Name                 string   `json:"name,omitempty" bson:"name,omitempty"`               //云主机名称
-	Description          string   `json:"description,omitempty" bson:"description,omitempty"` //云主机的详细描述
-	State                string   `json:"state,omitempty" bson:"state,omitempty"`
-	DefaultL3NetworkUuid string   `json:"defaultL3NetworkUuid,omitempty" bson:"defaultL3NetworkUuid,omitempty"` //默认三层网络UUID 当l3NetworkUuids指定了多个三层网络时，该字段指定提供默认路由的三层网络。若不指定，l3NetworkUuids的第一个网络被选为默认网络。
-	Platform             string   `json:"platform,omitempty" bson:"platform,omitempty"`                         //云盘系统平台
-	CpuNum               int      `json:"cpuNum,omitempty" bson:"cpuNum,omitempty"`                             //CPU数目
-	MemorySize           int64    `json:"memorySize,omitempty" bson:"memorySize,omitempty"`                     //CPU数量/内存大小，注意：该参数与instanceOfferingUuid二选一
-	SystemTags           []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"`                     //云主机系统标签
-	UserTags             []string `json:"userTags,omitempty" bson:"userTags,omitempty"`                         //云主机用户标签
+	UUID             string                 `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
+	UpdateVmInstance UpdateVmInstanceParams `json:"updateVmInstance" bson:"updateVmInstance"`
+	SystemTags       []string               `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags         []string               `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+}
+
+type UpdateVmInstanceParams struct {
+	Name                 string `json:"name,omitempty" bson:"name,omitempty"`               //云主机名称
+	Description          string `json:"description,omitempty" bson:"description,omitempty"` //云主机的详细描述
+	State                string `json:"state,omitempty" bson:"state,omitempty"`
+	DefaultL3NetworkUuid string `json:"defaultL3NetworkUuid,omitempty" bson:"defaultL3NetworkUuid,omitempty"` //默认三层网络UUID 当l3NetworkUuids指定了多个三层网络时，该字段指定提供默认路由的三层网络。若不指定，l3NetworkUuids的第一个网络被选为默认网络。
+	Platform             string `json:"platform,omitempty" bson:"platform,omitempty"`                         //云盘系统平台
+	CpuNum               int    `json:"cpuNum,omitempty" bson:"cpuNum,omitempty"`                             //CPU数目
+	MemorySize           int64  `json:"memorySize,omitempty" bson:"memorySize,omitempty"`                     //CPU数量/内存大小，注意：该参数与instanceOfferingUuid二选一
 }
 
 type UpdateVmInstanceResponse struct {
@@ -960,8 +957,9 @@ type GetVmInstanceHaLevelRequest struct {
 }
 
 type GetVmInstanceHaLevelResponse struct {
-	Level string    `json:"level" bson:"level"`                     //云主机高可用级别： NeverStop 永不停机
-	Error ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Level   string    `json:"level" bson:"level"` //云主机高可用级别： NeverStop 永不停机
+	Success bool      `json:"success" bson:"success"`
+	Error   ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //取消云主机高可用
@@ -1094,8 +1092,8 @@ type GetImageCandidatesForVmToChangeRequest struct {
 }
 
 type GetImageCandidatesForVmToChangeResponse struct {
-	Inventories []VmInventories `bson:"inventories" bson:"inventories"`
-	Error       ErrorCode       `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []ImageInventory `bson:"inventories" bson:"inventories"`
+	Error       ErrorCode        `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //更新云主机mac地址
@@ -1135,17 +1133,17 @@ type SetVmCleanTrafficResponse struct {
 //为云主机创建CDROM
 type CreateVmCdRomRequest struct {
 	ReqConfig
-	VmInstanceUuid string              `json:"vmInstanceUuid" bson:"vmInstanceUuid"`             //云主机UUID
-	Params         CreateVmCdRomParams `json:"params" bson:"params"`                             //放Name,VmInstanceUuid,Description
-	SystemTags     []string            `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags       []string            `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+	Params     CreateVmCdRomParams `json:"params" bson:"params"`                             //放Name,VmInstanceUuid,Description
+	SystemTags []string            `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string            `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
 
 type CreateVmCdRomParams struct {
-	Name         string `json:"name" bson:"name"`                                   //资源名称
-	IsoUuid      string `json:"isoUuid,omitempty" bson:"isoUuid,omitempty"`         //ISO镜像UUID
-	Description  string `json:"description,omitempty" bson:"description,omitempty"` //资源的详细描述
-	ResourceUuid string `json:"resourceUuid " bson:"resourceUuid "`                 //资源UUID
+	VmInstanceUuid string `json:"vmInstanceUuid" bson:"vmInstanceUuid"`               //云主机UUID
+	Name           string `json:"name" bson:"name"`                                   //资源名称
+	IsoUuid        string `json:"isoUuid,omitempty" bson:"isoUuid,omitempty"`         //ISO镜像UUID
+	Description    string `json:"description,omitempty" bson:"description,omitempty"` //资源的详细描述
+	ResourceUuid   string `json:"resourceUuid " bson:"resourceUuid "`                 //资源UUID
 }
 
 type CreateVmCdRomResponse struct {
@@ -1164,6 +1162,25 @@ type DeleteVmCdRomRequest struct {
 
 type DeleteVmCdRomResponse struct {
 	Error ErrorCode `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+}
+
+//修改CDROM
+type UpdateVmCdRomRequest struct {
+	ReqConfig
+	Uuid          string              `json:"uuid" bson:"uuid"` //UUID
+	UpdateVmCdRom UpdateVmCdRomParams `json:"updateVmCdRom" bson:"updateVmCdRom"`
+	SystemTags    []string            `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags      []string            `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+}
+
+type UpdateVmCdRomParams struct {
+	Name        string `json:"name,omitempty" bson:"name,omitempty"`               //云盘名称
+	Description string `json:"description,omitempty" bson:"description,omitempty"` //资源的详细描述
+}
+
+type UpdateVmCdRomResponse struct {
+	Inventory VmCdRomInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode        `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //设置云主机默认CDROM
@@ -1325,13 +1342,13 @@ type GetVmInstanceFirstBootDeviceResponse struct {
 type UpdateVmNicDriverRequest struct {
 	ReqConfig
 	VmInstanceUuid    string                  `json:"vmInstanceUuid" bson:"vmInstanceUuid"` //云主机UUID
+	VmNicUuid         string                  `json:"vmNicUuid" bson:"vmNicUuid"`           //云主机网卡UUID，该网卡所在网络会从云主机卸载掉
 	UpdateVmNicDriver UpdateVmNicDriverParams `json:"updateVmNicDriver" bson:"updateVmNicDriver"`
 	SystemTags        []string                `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags          []string                `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
 
 type UpdateVmNicDriverParams struct {
-	VmNicUuid  string `json:"vmNicUuid" bson:"vmNicUuid"`   //云主机网卡UUID，该网卡所在网络会从云主机卸载掉
 	DriverType string `json:"driverType" bson:"driverType"` //网卡驱动类型,vcenter侧的VPC可选的网卡驱动:1.E1000E,2.E1000,3.Vmxnet3,4.Sriov
 }
 
@@ -1352,4 +1369,5 @@ type GetVmDeviceAddressRequest struct {
 type GetVmDeviceAddressResponse struct {
 	Error     ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 	Addresses map[string]interface{} `json:"addresses" bson:"addresses"`             //云主机第一启动项
+	Success   bool                   `json:"success" bson:"success"`
 }

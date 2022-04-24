@@ -41,10 +41,10 @@ type DeleteAutoScalingGroupResponse struct {
 //修改弹性伸缩组
 type UpdateAutoScalingGroupRequest struct {
 	ReqConfig
-	UUID                     string                       `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
-	ChangeAffinityGroupState UpdateAutoScalingGroupParams `json:"changeAffinityGroupState" bson:"changeAffinityGroupState"`
-	SystemTags               []string                     `json:"systemTags,omitempty" bson:"systemTags,omitempty"`
-	UserTags                 []string                     `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	UUID                   string                       `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
+	UpdateAutoScalingGroup UpdateAutoScalingGroupParams `json:"updateAutoScalingGroup" bson:"updateAutoScalingGroup"`
+	SystemTags             []string                     `json:"systemTags,omitempty" bson:"systemTags,omitempty"`
+	UserTags               []string                     `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type UpdateAutoScalingGroupParams struct {

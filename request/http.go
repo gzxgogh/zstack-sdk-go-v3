@@ -8,6 +8,7 @@ import (
 	"github.com/maczh/utils"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -85,10 +86,11 @@ func Post(url string, params interface{}) (string, error) {
 		return "参数缺失", errors.New(errStr)
 	}
 
-	logs.Debug("url:{}", url)
 	header := GetSign("POST", url, fmt.Sprint(obj["accessKeyId"]), fmt.Sprint(obj["accessKeySecret"]))
 	logs.Debug("签名结果:{}", header)
 	url = fmt.Sprint(obj["host"]) + url
+	logs.Debug("url:{}", url)
+
 	resp, err := grequests.Post(url, &grequests.RequestOptions{
 		JSON:    params,
 		Headers: header,
@@ -101,25 +103,32 @@ func Post(url string, params interface{}) (string, error) {
 	//需要异步调用API,除了登录相关的API外，所有不使用GET方法的API都为异步API。
 	//用户调用一个异步API成功后会收到202返回码以及 Body中包含的一个轮询地址（location字段），
 	//用户需要周期性的GET该轮询地址以获得API的执行结果
-	var res map[string]string
-	utils.FromJSON(resp.String(), &res)
-	for {
-		time.Sleep(1 * time.Second)
-		resp, err = grequests.Get(res["location"], &grequests.RequestOptions{
-			Headers: header,
-		})
-		if err != nil {
-			logs.Error("异步调用API请求错误:{}", err.Error())
-			return "请求错误", err
-		}
-		logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
-		logs.Debug("异步请求后的结果:{}", resp.String())
-		if resp.StatusCode == 200 || resp.StatusCode == 503 {
-			return resp.String(), nil
-		} else if resp.StatusCode != 202 {
-			return "请求错误", errors.New(resp.String())
+
+	if resp.StatusCode == 202 {
+		var res map[string]string
+		utils.FromJSON(resp.String(), &res)
+		for {
+			time.Sleep(1 * time.Second)
+
+			arr := strings.Split(res["location"], "/zstack")
+			location := fmt.Sprint(obj["host"]) + "zstack" + arr[1]
+			resp, err = grequests.Get(location, &grequests.RequestOptions{
+				Headers: header,
+			})
+			if err != nil {
+				logs.Error("异步调用API请求错误:{}", err.Error())
+				return "请求错误", err
+			}
+			logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
+			logs.Debug("异步请求后的结果:{}", resp.String())
+			if resp.StatusCode == 200 || resp.StatusCode == 503 {
+				return resp.String(), nil
+			} else if resp.StatusCode != 202 {
+				return "请求错误", errors.New(resp.String())
+			}
 		}
 	}
+	return "请求错误", errors.New(resp.String())
 }
 
 func Put(url string, params interface{}) (string, error) {
@@ -132,10 +141,10 @@ func Put(url string, params interface{}) (string, error) {
 		return "参数缺失", errors.New(errStr)
 	}
 
-	logs.Debug("url:{}", url)
 	header := GetSign("PUT", url, fmt.Sprint(obj["accessKeyId"]), fmt.Sprint(obj["accessKeySecret"]))
 	logs.Debug("签名结果:{}", header)
 	url = fmt.Sprint(obj["host"]) + url
+	logs.Debug("url:{}", url)
 	resp, err := grequests.Put(url, &grequests.RequestOptions{
 		JSON:    params,
 		Headers: header,
@@ -148,25 +157,32 @@ func Put(url string, params interface{}) (string, error) {
 	//需要异步调用API,除了登录相关的API外，所有不使用GET方法的API都为异步API。
 	//用户调用一个异步API成功后会收到202返回码以及 Body中包含的一个轮询地址（location字段），
 	//用户需要周期性的GET该轮询地址以获得API的执行结果
-	var res map[string]string
-	utils.FromJSON(resp.String(), &res)
-	for {
-		time.Sleep(1 * time.Second)
-		resp, err = grequests.Get(res["location"], &grequests.RequestOptions{
-			Headers: header,
-		})
-		if err != nil {
-			logs.Error("异步调用API请求错误:{}", err.Error())
-			return "请求错误", err
+	if resp.StatusCode == 202 {
+		var res map[string]string
+		utils.FromJSON(resp.String(), &res)
+		for {
+			time.Sleep(1 * time.Second)
+			arr := strings.Split(res["location"], "/zstack")
+			location := fmt.Sprint(obj["host"]) + "zstack" + arr[1]
+			resp, err = grequests.Get(location, &grequests.RequestOptions{
+				Headers: header,
+			})
+			if err != nil {
+				logs.Error("异步调用API请求错误:{}", err.Error())
+				return "请求错误", err
+			}
+			logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
+			logs.Debug("异步请求后的结果:{}", resp.String())
+			if resp.StatusCode == 200 || resp.StatusCode == 503 {
+				return resp.String(), nil
+			} else if resp.StatusCode != 202 {
+				return "请求错误", errors.New(resp.String())
+			}
 		}
-		logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
-		logs.Debug("异步请求后的结果:{}", resp.String())
-		if resp.StatusCode == 200 || resp.StatusCode == 503 {
-			return resp.String(), nil
-		} else if resp.StatusCode != 202 {
-			return "请求错误", errors.New(resp.String())
-		}
+	} else if resp.StatusCode == 200 || resp.StatusCode == 503 {
+		return resp.String(), nil
 	}
+	return "请求错误", errors.New(resp.String())
 }
 
 func Delete(url string, params interface{}) (string, error) {
@@ -179,10 +195,10 @@ func Delete(url string, params interface{}) (string, error) {
 		return "参数缺失", errors.New(errStr)
 	}
 
-	logs.Debug("url:{}", url)
 	header := GetSign("DELETE", url, fmt.Sprint(obj["accessKeyId"]), fmt.Sprint(obj["accessKeySecret"]))
 	logs.Debug("签名结果:{}", header)
 	url = fmt.Sprint(obj["host"]) + url
+	logs.Debug("url:{}", url)
 	resp, err := grequests.Delete(url, &grequests.RequestOptions{
 		JSON:    params,
 		Headers: header,
@@ -195,87 +211,33 @@ func Delete(url string, params interface{}) (string, error) {
 	//需要异步调用API,除了登录相关的API外，所有不使用GET方法的API都为异步API。
 	//用户调用一个异步API成功后会收到202返回码以及 Body中包含的一个轮询地址（location字段），
 	//用户需要周期性的GET该轮询地址以获得API的执行结果
-	var res map[string]string
-	utils.FromJSON(resp.String(), &res)
-	for {
-		time.Sleep(1 * time.Second)
-		resp, err = grequests.Get(res["location"], &grequests.RequestOptions{
-			Headers: header,
-		})
-		if err != nil {
-			logs.Error("错误:{}", err.Error())
-			return "请求错误", err
+	if resp.StatusCode == 202 {
+		var res map[string]string
+		utils.FromJSON(resp.String(), &res)
+		for {
+			time.Sleep(1 * time.Second)
+			arr := strings.Split(res["location"], "/zstack")
+			location := fmt.Sprint(obj["host"]) + "zstack" + arr[1]
+			resp, err = grequests.Get(location, &grequests.RequestOptions{
+				Headers: header,
+			})
+			if err != nil {
+				logs.Error("错误:{}", err.Error())
+				return "请求错误", err
+			}
+			logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
+			logs.Debug("异步请求后的结果:{}", resp.String())
+			if resp.StatusCode == 200 || resp.StatusCode == 503 {
+				return resp.String(), nil
+			} else if resp.StatusCode != 202 {
+				return "请求错误", errors.New(resp.String())
+			}
 		}
-		logs.Debug("异步请求后的状态码:{}", resp.StatusCode)
-		logs.Debug("异步请求后的结果:{}", resp.String())
-		if resp.StatusCode == 200 || resp.StatusCode == 503 {
-			return resp.String(), nil
-		} else if resp.StatusCode != 202 {
-			return "请求错误", errors.New(resp.String())
-		}
-
-	}
-}
-
-//无需异步调用API
-func PutWithoutAsync(url string, params interface{}) (string, error) {
-	dataStr := utils.ToJSON(params)
-	obj := make(map[string]interface{})
-	utils.FromJSON(dataStr, &obj)
-	errStr, errCode := paramCheck(obj)
-	if errCode != 0 {
-		logs.Error("参数缺失:{}", errStr)
-		return "参数缺失", errors.New(errStr)
-	}
-
-	logs.Debug("url:{}", url)
-	header := GetSign("PUT", url, fmt.Sprint(obj["accessKeyId"]), fmt.Sprint(obj["accessKeySecret"]))
-	logs.Debug("签名结果:{}", header)
-	url = fmt.Sprint(obj["host"]) + url
-	resp, err := grequests.Put(url, &grequests.RequestOptions{
-		JSON:    params,
-		Headers: header,
-	})
-	if err != nil {
-		logs.Error("错误:{}", err.Error())
-		return "请求错误", err
-	}
-	logs.Debug("返回结果:{}", resp.String())
-	if resp.StatusCode == 200 || resp.StatusCode == 503 {
+	} else if resp.StatusCode == 200 || resp.StatusCode == 503 {
 		return resp.String(), nil
-	} else {
-		return "请求错误", errors.New(resp.String())
-	}
-}
-
-func DeleteWithoutAsync(url string, params interface{}) (string, error) {
-	dataStr := utils.ToJSON(params)
-	obj := make(map[string]interface{})
-	utils.FromJSON(dataStr, &obj)
-	errStr, errCode := paramCheck(obj)
-	if errCode != 0 {
-		logs.Error("参数缺失:{}", errStr)
-		return "参数缺失", errors.New(errStr)
 	}
 
-	logs.Debug("url:{}", url)
-	header := GetSign("DELETE", url, fmt.Sprint(obj["accessKeyId"]), fmt.Sprint(obj["accessKeySecret"]))
-	logs.Debug("签名结果:{}", header)
-	url = fmt.Sprint(obj["host"]) + url
-	resp, err := grequests.Delete(url, &grequests.RequestOptions{
-		JSON:    params,
-		Headers: header,
-	})
-	if err != nil {
-		logs.Error("请求错误:{}", err.Error())
-		return "请求错误", err
-	}
-	logs.Debug("返回结果:{}", resp.String())
-	if resp.StatusCode == 200 || resp.StatusCode == 503 {
-		return resp.String(), nil
-	} else {
-		return "请求错误", errors.New(resp.String())
-	}
+	return "请求错误", errors.New(resp.String())
 }
 
 func paramCheck(params map[string]interface{}) (string, int) {

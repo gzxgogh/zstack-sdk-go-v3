@@ -160,21 +160,6 @@ type QueryVolumeResponse struct {
 	Error       ErrorCode         `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
-//修改CDROM
-type UpdateVmCdRomRequest struct {
-	ReqConfig
-	Uuid        string   `json:"uuid" bson:"uuid"`                                   //UUID
-	Name        string   `json:"name,omitempty" bson:"name,omitempty"`               //云盘名称
-	Description string   `json:"description,omitempty" bson:"description,omitempty"` //资源的详细描述
-	SystemTags  []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"`   //云主机系统标签
-	UserTags    []string `json:"userTags,omitempty" bson:"userTags,omitempty"`       //云主机用户标签
-}
-
-type UpdateVmCdRomResponse struct {
-	Inventory VmCdRomInventory `json:"inventory" bson:"inventory"`
-	Error     ErrorCode        `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-}
-
 //获取云盘格式
 type GetVolumeFormatRequest struct {
 	ReqConfig
@@ -208,10 +193,13 @@ type Capabilities struct {
 //同步云盘大小
 type SyncVolumeSizeRequest struct {
 	ReqConfig
-	Uuid           string                 `json:"uuid" bson:"uuid"`                                         //UUID
-	SyncVolumeSize map[string]interface{} `json:"syncVolumeSize,omitempty" bson:"syncVolumeSize,omitempty"` //放空
-	SystemTags     []string               `json:"systemTags,omitempty" bson:"systemTags,omitempty"`         //云主机系统标签
-	UserTags       []string               `json:"userTags,omitempty" bson:"userTags,omitempty"`             //云主机用户标签
+	Uuid           string               `json:"uuid" bson:"uuid"` //UUID
+	SyncVolumeSize SyncVolumeSizeParams `json:"syncVolumeSize" bson:"syncVolumeSize"`
+	SystemTags     []string             `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags       []string             `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+}
+
+type SyncVolumeSizeParams struct {
 }
 
 type SyncVolumeSizeResponse struct {
@@ -296,7 +284,7 @@ type SetVolumeQoSResponse struct {
 type GetVolumeQoSRequest struct {
 	ReqConfig
 	Uuid       string   `json:"uuid" bson:"uuid"`                                 //UUID
-	ForceSync  bool     `json:"forceSync " bson:"forceSync "`                     //是否到物理机上去同步数据
+	ForceSync  bool     `json:"forceSync,omitempty" bson:"forceSync,omitempty"`   //是否到物理机上去同步数据
 	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
@@ -395,8 +383,8 @@ type QueryVolumeSnapshotRequest struct {
 }
 
 type QueryVolumeSnapshotResponse struct {
-	Error     ErrorCode               `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory VolumeSnapshotInventory `json:"inventory" bson:"inventory"`
+	Error       ErrorCode                 `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []VolumeSnapshotInventory `json:"inventories" bson:"inventories"`
 }
 
 //查询快照树

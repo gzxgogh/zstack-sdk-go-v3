@@ -246,8 +246,8 @@ type CreateSNSHttpEndpointRequest struct {
 type CreateSNSHttpEndpointParams struct {
 	Url          string `json:"url" bson:"url"`
 	Name         string `json:"name" bson:"name"`                                   //资源名称
-	Username     string `json:"username" bson:"username"`                           //用户名
-	Password     string `json:"password" bson:"password"`                           //用户密码
+	Username     string `json:"username,omitempty" bson:"username,omitempty"`       //用户名
+	Password     string `json:"password,omitempty" bson:"password,omitempty"`       //用户密码
 	Description  string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 	PlatformUuid string `json:"platformUuid,omitempty" bson:"platformUuid,omitempty"`
 	ResourceUuid string `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //资源UUID。若指定，镜像会使用该字段值作为UUID。
@@ -520,9 +520,9 @@ type UpdateEmailAddressOfSNSEmailEndpointRequest struct {
 }
 
 type UpdateEmailAddressOfSNSEmailEndpointParams struct {
-	EmailAddressUuid string `json:"emailAddressUuid" bson:"emailAddressUuid"` //邮箱地址uuid
-	EmailAddress     string `json:"emailAddress" bson:"emailAddress"`         //邮箱地址
-	EndpointUuid     string `json:"endpointUuid" bson:"endpointUuid"`         //接收端Uuid
+	EmailAddressUuid string `json:"emailAddressUuid" bson:"emailAddressUuid"`             //邮箱地址uuid
+	EmailAddress     string `json:"emailAddress,omitempty" bson:"emailAddress,omitempty"` //邮箱地址
+	EndpointUuid     string `json:"endpointUuid" bson:"endpointUuid"`                     //接收端Uuid
 }
 
 type UpdateEmailAddressOfSNSEmailEndpointResponse struct {

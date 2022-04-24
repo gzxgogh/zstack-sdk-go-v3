@@ -548,14 +548,13 @@ type UpdateCephPrimaryStoragePoolParams struct {
 }
 
 type UpdateCephPrimaryStoragePoolResponse struct {
-	Inventories []CephPrimaryStoragePoolInventory `json:"inventories" bson:"inventories"`
-	Error       ErrorCode                         `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory CephPrimaryStoragePoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode                       `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //添加Shared Block主存储
 type AddSharedBlockGroupPrimaryStorageRequest struct {
 	ReqConfig
-	Uuid       string                             `json:"uuid" bson:"uuid"` //mon节点UUID
 	Params     UpdateCephPrimaryStoragePoolParams `json:"params" bson:"params"`
 	SystemTags []string                           `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags   []string                           `json:"userTags,omitempty" bson:"userTags,omitempty"`
@@ -644,7 +643,6 @@ type RefreshSharedblockDeviceCapacityRequest struct {
 }
 
 type RefreshSharedblockDeviceCapacityParams struct {
-	DiskUuid string `json:"diskUuid" bson:"diskUuid"` //磁盘维一标示（例如UUID, WWN, WWID）
 }
 
 type RefreshSharedblockDeviceCapacityResponse struct {

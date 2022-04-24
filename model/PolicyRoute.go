@@ -12,7 +12,7 @@ type CreatePolicyRouteRuleSetParams struct {
 	Name         string   `json:"name" bson:"name"`                                   //资源名称
 	Description  string   `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 	VRouterUuid  string   `json:"vRouterUuid" bson:"vRouterUuid"`
-	Type         string   `json:"type" bson:"type"`
+	Type         string   `json:"type,omitempty" bson:"type,omitempty"`
 	ResourceUuid string   `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //资源UUID。若指定，镜像会使用该字段值作为UUID。
 	TagUuids     []string `json:"tagUuids,omitempty" bson:"tagUuids,omitempty"`
 }
@@ -38,10 +38,10 @@ type DeletePolicyRouteRuleSetResponse struct {
 //更新策略路由规则集属性
 type UpdatePolicyRouteRuleSetRequest struct {
 	ReqConfig
-	UUID                     string                      `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
-	UpdatePolicyRouteRuleSet CreateMulticastRouterParams `json:"updatePolicyRouteRuleSet" bson:"updatePolicyRouteRuleSet"`
-	SystemTags               []string                    `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags                 []string                    `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	UUID                     string                         `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
+	UpdatePolicyRouteRuleSet UpdatePolicyRouteRuleSetParams `json:"updatePolicyRouteRuleSet" bson:"updatePolicyRouteRuleSet"`
+	SystemTags               []string                       `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags                 []string                       `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type UpdatePolicyRouteRuleSetParams struct {

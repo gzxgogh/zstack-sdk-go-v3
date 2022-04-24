@@ -69,7 +69,7 @@ type QueryVolumeSnapshotGroupResponse struct {
 //检查快照组可用性
 type CheckVolumeSnapshotGroupAvailabilityRequest struct {
 	ReqConfig
-	Uuids      []string `json:"uuids,omitempty" bson:"uuids,omitempty"` //资源的UUID，唯一标示该资源
+	Uuids      []string `json:"uuids" bson:"uuids"` //资源的UUID，唯一标示该资源
 	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"`
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
@@ -127,8 +127,8 @@ type VolumeSnapshotGroupInventory struct {
 type VolumeSnapshotRefs struct {
 	VolumeSnapshotUuid        string `json:"volumeSnapshotUuid" bson:"volumeSnapshotUuid"`               //云盘快照UUID
 	VolumeSnapshotGroupUuid   string `json:"volumeSnapshotGroupUuid" bson:"volumeSnapshotGroupUuid"`     //快照组UUID
-	DeviceId                  string `json:"deviceId" bson:"deviceId"`                                   //打快照时云盘的加载序号
-	SnapshotDeleted           string `json:"snapshotDeleted" bson:"snapshotDeleted"`                     //快照是否已经被删除
+	DeviceId                  int    `json:"deviceId" bson:"deviceId"`                                   //打快照时云盘的加载序号
+	SnapshotDeleted           bool   `json:"snapshotDeleted" bson:"snapshotDeleted"`                     //快照是否已经被删除
 	VolumeUuid                string `json:"volumeUuid" bson:"volumeUuid"`                               //云盘UUID
 	VolumeName                string `json:"volumeName" bson:"volumeName"`                               //云盘的名字
 	VolumeType                string `json:"volumeType" bson:"volumeType"`                               //	云盘的类型

@@ -367,7 +367,7 @@ type AddMonToCephBackupStorageRequest struct {
 }
 
 type AddMonToCephBackupStorageParams struct {
-	MonUrls string `json:"monUrls" bson:"monUrls"`
+	MonUrls []string `json:"monUrls" bson:"monUrls"`
 }
 
 type AddMonToCephBackupStorageResponse struct {

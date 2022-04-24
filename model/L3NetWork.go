@@ -317,10 +317,10 @@ type UpdateIpRangeResponse struct {
 //通过网络CIDR添加IP地址范围
 type AddIpRangeByNetworkCidrRequest struct {
 	ReqConfig
-	L3NetworkUuid string              `json:"l3NetworkUuid" bson:"l3NetworkUuid"` //三层网络UUID
-	Params        UpdateIpRangeParams `json:"params" bson:"params"`
-	SystemTags    []string            `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags      []string            `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	L3NetworkUuid string                        `json:"l3NetworkUuid" bson:"l3NetworkUuid"` //三层网络UUID
+	Params        AddIpRangeByNetworkCidrParams `json:"params" bson:"params"`
+	SystemTags    []string                      `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags      []string                      `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type AddIpRangeByNetworkCidrParams struct {

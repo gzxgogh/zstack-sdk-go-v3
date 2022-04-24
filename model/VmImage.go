@@ -30,17 +30,11 @@ type AddImageResponse struct {
 //删除镜像
 type DeleteImageRequest struct {
 	ReqConfig
-	Uuid               string            `json:"uuid" bson:"uuid"`                                                 //镜像的UUID，唯一标示该子资源
-	BackupStorageUuids string            `json:"backupStorageUuids,omitempty" bson:"backupStorageUuids,omitempty"` //指定添加镜像的镜像服务器UUID列表
-	DeleteMode         string            `json:"deleteMode,omitempty" bson:"deleteMode,omitempty"`                 //删除模式(Permissive 或者 Enforcing, 默认 Permissive)
-	Params             DeleteImageParams `json:"params" bson:"params"`
-	SystemTags         []string          `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags           []string          `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
-}
-
-type DeleteImageParams struct {
-	BackupStorageUuids string `json:"backupStorageUuids,omitempty" bson:"backupStorageUuids,omitempty"` //指定添加镜像的镜像服务器UUID列表
-	DeleteMode         string `json:"deleteMode,omitempty" bson:"deleteMode,omitempty"`                 //删除模式(Permissive 或者 Enforcing, 默认 Permissive)
+	Uuid               string   `json:"uuid" bson:"uuid"`                                                 //镜像的UUID，唯一标示该子资源
+	BackupStorageUuids []string `json:"backupStorageUuids,omitempty" bson:"backupStorageUuids,omitempty"` //指定添加镜像的镜像服务器UUID列表
+	DeleteMode         string   `json:"deleteMode,omitempty" bson:"deleteMode,omitempty"`                 //删除模式(Permissive 或者 Enforcing, 默认 Permissive)
+	SystemTags         []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"`                 //云主机系统标签
+	UserTags           []string `json:"userTags,omitempty" bson:"userTags,omitempty"`                     //云主机用户标签
 }
 
 type DeleteImageResponse struct {
@@ -50,11 +44,10 @@ type DeleteImageResponse struct {
 //彻底删除镜像
 type ExpungeImageRequest struct {
 	ReqConfig
-	ImageUuid          string             `json:"imageUuid" bson:"imageUuid"`                     //镜像UUID
-	BackupStorageUuids []string           `json:"backupStorageUuids " bson:"backupStorageUuids "` //指定添加镜像的镜像服务器UUID列表
-	ExpungeImage       ExpungeImageParams `json:"expungeImage" bson:"expungeImage"`
-	SystemTags         []string           `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags           []string           `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+	ImageUuid    string             `json:"imageUuid" bson:"imageUuid"` //镜像UUID
+	ExpungeImage ExpungeImageParams `json:"expungeImage" bson:"expungeImage"`
+	SystemTags   []string           `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags     []string           `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
 
 type ExpungeImageParams struct {
@@ -83,11 +76,10 @@ type QueryImageResponse struct {
 //恢复镜像
 type RecoverImageRequest struct {
 	ReqConfig
-	ImageUuid          string             `json:"imageUuid" bson:"imageUuid"`                       //镜像UUID
-	BackupStorageUuids []string           `json:"backupStorageUuids " bson:"backupStorageUuids "`   //指定添加镜像的镜像服务器UUID列表
-	RecoverImage       RecoverImageParams `json:"recoverImage" bson:"recoverImage"`                 //放backupStorageUuids
-	SystemTags         []string           `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags           []string           `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
+	ImageUuid    string             `json:"imageUuid" bson:"imageUuid"`                       //镜像UUID
+	RecoverImage RecoverImageParams `json:"recoverImage" bson:"recoverImage"`                 //放backupStorageUuids
+	SystemTags   []string           `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags     []string           `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
 }
 
 type RecoverImageParams struct {
@@ -103,7 +95,6 @@ type RecoverImageResponse struct {
 type ChangeImageStateRequest struct {
 	ReqConfig
 	Uuid             string                 `json:"uuid" bson:"uuid"`                                 //镜像的UUID，唯一标示该镜像
-	StateEvent       string                 `json:"stateEvent " bson:"stateEvent "`                   //镜像的状态,enable,disable
 	ChangeImageState ChangeImageStateParams `json:"recoverImage" bson:"recoverImage"`                 //放stateEvent
 	SystemTags       []string               `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags         []string               `json:"userTags,omitempty" bson:"userTags,omitempty"`     //云主机用户标签
@@ -185,7 +176,7 @@ type CreateRootVolumeTemplateFromRootVolumeParams struct {
 	GuestOsType        string   `json:"guestOsType,omitempty" bson:"guestOsType,omitempty"`               //根云盘镜像对应客户机操作系统类型
 	BackupStorageUuids []string `json:"backupStorageUuids,omitempty" bson:"backupStorageUuids,omitempty"` //镜像服务器UUID列表
 	Platform           string   `json:"platform,omitempty" bson:"platform,omitempty"`                     //镜像的系统平台,Linux,Windows,WindowsVirtio,Other,Paravirtualization
-	System             string   `json:"system" bson:"system"`                                             //是否系统根云盘镜像
+	System             bool     `json:"system,omitempty" bson:"system,omitempty"`                         //是否系统根云盘镜像
 	ResourceUuid       string   `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"`             //根云盘镜像UUID。若指定，根云盘镜像会使用该字段值作为UUID。
 }
 
@@ -209,7 +200,7 @@ type CreateRootVolumeTemplateFromVolumeSnapshotParams struct {
 	GuestOsType        string   `json:"guestOsType,omitempty" bson:"guestOsType,omitempty"`               //根云盘镜像对应客户机操作系统类型
 	BackupStorageUuids []string `json:"backupStorageUuids,omitempty" bson:"backupStorageUuids,omitempty"` //镜像服务器UUID列表
 	Platform           string   `json:"platform,omitempty" bson:"platform,omitempty"`                     //镜像的系统平台,Linux,Windows,WindowsVirtio,Other,Paravirtualization
-	System             string   `json:"system" bson:"system"`                                             //是否系统根云盘镜像
+	System             bool     `json:"system" bson:"system"`                                             //是否系统根云盘镜像
 	ResourceUuid       string   `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"`             //根云盘镜像UUID。若指定，根云盘镜像会使用该字段值作为UUID。
 }
 

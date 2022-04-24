@@ -58,7 +58,7 @@ type UpdateEipRequest struct {
 }
 
 type UpdateEipParams struct {
-	Name        string `json:"name" bson:"name"`                                   //资源名称
+	Name        string `json:"name,omitempty" bson:"name,omitempty"`               //资源名称
 	Description string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 }
 
@@ -110,7 +110,7 @@ type AttachEipRequest struct {
 }
 
 type AttachEipParams struct {
-	UsedIpUuid string `json:"usedIpUuid " bson:"usedIpUuid "`
+	UsedIpUuid string `json:"usedIpUuid,omitempty" bson:"usedIpUuid,omitempty"`
 }
 
 type AttachEipResponse struct {
@@ -123,10 +123,6 @@ type DetachEipRequest struct {
 	UUID       string   `json:"uuid" bson:"uuid"`
 	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
-}
-
-type DetachEipParams struct {
-	UsedIpUuid string `json:"usedIpUuid " bson:"usedIpUuid "`
 }
 
 type DetachEipResponse struct {

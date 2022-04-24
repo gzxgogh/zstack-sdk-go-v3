@@ -3,10 +3,9 @@ package model
 //创建端口镜像
 type CreatePortMirrorRequest struct {
 	ReqConfig
-	FlowMeterUuid string          `json:"flowMeterUuid" bson:"flowMeterUuid"` //流量监控资源的uuid
-	Params        CreateVipParams `json:"params" bson:"params"`
-	SystemTags    []string        `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags      []string        `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	Params     CreateVipParams `json:"params" bson:"params"`
+	SystemTags []string        `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string        `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type CreatePortMirrorParams struct {
@@ -71,10 +70,9 @@ type DeletePortMirrorResponse struct {
 //创建端口镜像会话
 type CreatePortMirrorSessionRequest struct {
 	ReqConfig
-	FlowMeterUuid string                        `json:"flowMeterUuid" bson:"flowMeterUuid"` //流量监控资源的uuid
-	Params        CreatePortMirrorSessionParams `json:"params" bson:"params"`
-	SystemTags    []string                      `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags      []string                      `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	Params     CreatePortMirrorSessionParams `json:"params" bson:"params"`
+	SystemTags []string                      `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string                      `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type CreatePortMirrorSessionParams struct {

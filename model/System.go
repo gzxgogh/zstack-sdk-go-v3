@@ -406,8 +406,9 @@ type GCJobInventory struct {
 //获取许可证信息
 type GetLicenseInfoRequest struct {
 	ReqConfig
-	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	AdditionSession string   `json:"additionSession " bson:"additionSession "`
+	SystemTags      []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags        []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type GetLicenseInfoResponse struct {
@@ -519,7 +520,7 @@ type UpdateLongJobRequest struct {
 }
 
 type UpdateLongJobParams struct {
-	Name        string `json:"name" bson:"name"`                                   //资源名称
+	Name        string `json:"name,omitempty" bson:"name,omitempty"`               //资源名称
 	Description string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 }
 
@@ -558,8 +559,8 @@ type QueryLongJobResponse struct {
 type GetElaborationsRequest struct {
 	ReqConfig
 	Category   string   `json:"category,omitempty" bson:"category,omitempty"`     //错误码目录
-	Regex      string   `json:"regex" bson:"regex"`                               //错误码关键字
-	Code       string   `json:"code" bson:"code"`                                 //错误代码，与category一起使用
+	Regex      string   `json:"regex,omitempty" bson:"regex,omitempty"`           //错误码关键字
+	Code       string   `json:"code,omitempty" bson:"code,omitempty"`             //错误代码，与category一起使用
 	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }

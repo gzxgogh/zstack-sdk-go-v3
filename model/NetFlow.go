@@ -118,7 +118,7 @@ type UpdateFlowMeterRequest struct {
 
 type UpdateFlowMeterParams struct {
 	Version        string `json:"version,omitempty" bson:"version,omitempty"`               //流量监控协议的版本号:V5,V9
-	Sample         int    `json:"sample,omitempty" bson:"sample,omitempty "`                //流量监控的采样率
+	Sample         int64  `json:"sample,omitempty" bson:"sample,omitempty "`                //流量监控的采样率
 	Name           string `json:"name,omitempty" bson:"name,omitempty"`                     //资源名称
 	ExpireInterval string `json:"expireInterval,omitempty" bson:"expireInterval,omitempty"` //流量发送间隔
 	Description    string `json:"description,omitempty" bson:"description,omitempty"`       //详细描述

@@ -49,10 +49,10 @@ type QueryMulticastRouterResponse struct {
 //改变组播路由器状态
 type ChangeMulticastRouterStateRequest struct {
 	ReqConfig
-	UUID                       string                      `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
-	ChangeMulticastRouterState CreateMulticastRouterParams `json:"changeMulticastRouterState" bson:"changeMulticastRouterState"`
-	SystemTags                 []string                    `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags                   []string                    `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	UUID                       string                           `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
+	ChangeMulticastRouterState ChangeMulticastRouterStateParams `json:"changeMulticastRouterState" bson:"changeMulticastRouterState"`
+	SystemTags                 []string                         `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags                   []string                         `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type ChangeMulticastRouterStateParams struct {

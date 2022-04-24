@@ -14,7 +14,7 @@ type CreateVipParams struct {
 	L3NetworkUUID     string `json:"l3NetworkUuid" bson:"l3NetworkUuid"`                             //	三层网络UUID
 	IpRangeUUID       string `json:"ipRangeUuid,omitempty" bson:"ipRangeUuid,omitempty"`             //IP段UUID
 	AllocatorStrategy string `json:"allocatorStrategy,omitempty" bson:"allocatorStrategy,omitempty"` //分配策略
-	RequiredIp        int    `json:"requiredIp,omitempty" bson:"requiredIp,omitempty"`               //请求的IP
+	RequiredIp        string `json:"requiredIp,omitempty" bson:"requiredIp,omitempty"`               //请求的IP
 	ResourceUuid      string `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"`           //资源UUID。若指定，镜像会使用该字段值作为UUID。
 }
 
@@ -116,8 +116,8 @@ type SetVipQosParams struct {
 }
 
 type SetVipQosResponse struct {
-	Inventories []VipQosInventory `json:"inventories" bson:"inventories"`
-	Error       ErrorCode         `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory VipQosInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode       `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //获取虚拟IP限速

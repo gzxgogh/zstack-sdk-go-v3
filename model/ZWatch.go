@@ -16,9 +16,10 @@ type GetAllMetricMetadataResponse struct {
 }
 
 type Metrics struct {
-	Namespace   string `json:"namespace" bson:"namespace"`
-	Name        string `json:"name" bson:"name"`                                   //资源名称
-	Description string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
+	Namespace   string   `json:"namespace" bson:"namespace"`
+	Name        string   `json:"name" bson:"name"`                                   //资源名称
+	Description string   `json:"description,omitempty" bson:"description,omitempty"` //详细描述
+	LabelNames  []string `json:"labelNames" bson:"labelNames"`
 }
 
 //获取metric的标签值
@@ -79,8 +80,8 @@ type PutMetricDataRequest struct {
 }
 
 type PutMetricDataParams struct {
-	Namespace string     `json:"namespace" bson:"namespace"` //名字空间名称
-	Data      MetricData `json:"data" bson:"data"`
+	Namespace string       `json:"namespace" bson:"namespace"` //名字空间名称
+	Data      []MetricData `json:"data" bson:"data"`
 }
 
 type PutMetricDataResponse struct {
@@ -146,15 +147,9 @@ type EventDataInventory struct {
 //更新事件消息
 type UpdateEventDataRequest struct {
 	ReqConfig
-	StartTime                int64    `json:"startTime,omitempty" bson:"startTime,omitempty"`                               //开始时间
-	EndTime                  int64    `json:"endTime,omitempty" bson:"endTime,omitempty"`                                   //结束时间
-	Limit                    int      `json:"limit,omitempty" bson:"limit,omitempty"`                                       //最大返回条数
-	OffsetAheadOfCurrentTime int64    `json:"offsetAheadOfCurrentTime,omitempty" bson:"offsetAheadOfCurrentTime,omitempty"` //早于当前时间的毫秒数，例如：查询最近一小时的消息，则传入3600000
-	Conditions               []string `json:"conditions,omitempty" bson:"conditions,omitempty"`                             //查询条件
-	Count                    bool     `json:"count,omitempty" bson:"count,omitempty"`                                       //是否查询事件数量
-	EndpointUuid             string   `json:"endpointUuid,omitempty" bson:"endpointUuid,omitempty"`                         //接收端Uuid
-	SystemTags               []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"`                             //云主机系统标签
-	UserTags                 []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	UpdateEventData UpdateEventDataParams `json:"updateEventData" bson:"updateEventData"`
+	SystemTags      []string              `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags        []string              `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type UpdateEventDataParams struct {
@@ -415,9 +410,9 @@ type UpdateAlarmDataResponse struct {
 //订阅事件
 type SubscribeEventRequest struct {
 	ReqConfig
-	Params     CreateAlarmParams `json:"params" bson:"params"`
-	SystemTags []string          `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags   []string          `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	Params     SubscribeEventParams `json:"params" bson:"params"`
+	SystemTags []string             `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags   []string             `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type SubscribeEventParams struct {
@@ -471,9 +466,9 @@ type UpdateEventSubscriptionLabelRequest struct {
 }
 
 type UpdateEventSubscriptionLabelParams struct {
-	Key      string   `json:"key" bson:"key"`
-	Operator Operator `json:"operator" bson:"operator"`
-	Value    string   `json:"value" bson:"value"`
+	Key      string `json:"key" bson:"key"`
+	Operator string `json:"operator" bson:"operator"`
+	Value    string `json:"value" bson:"value"`
 }
 
 type UpdateEventSubscriptionLabelResponse struct {

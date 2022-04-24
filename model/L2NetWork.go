@@ -11,9 +11,9 @@ type CreateL2VxlanNetworkPoolRequest struct {
 type CreateL2VxlanNetworkPoolParams struct {
 	Name              string `json:"name" bson:"name"`                                   //资源名称
 	Description       string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
-	ZoneUuid          string `json:"zoneUuid,omitempty" bson:"zoneUuid,omitempty"`       //区域UUID 若指定，云主机会在指定区域创建。
+	ZoneUuid          string `json:"zoneUuid" bson:"zoneUuid"`                           //区域UUID 若指定，云主机会在指定区域创建。
 	PhysicalInterface string `json:"physicalInterface" bson:"physicalInterface"`
-	Type              string `json:"type " bson:"type "`
+	Type              string `json:"type,omitempty" bson:"type,omitempty"`
 	ResourceUuid      string `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //资源UUID。若指定，镜像会使用该字段值作为UUID。
 }
 
@@ -43,19 +43,19 @@ type CreateL2VxlanNetworkRequest struct {
 }
 
 type CreateL2VxlanNetworkParams struct {
-	Vni               int    `json:"vni" bson:"vni"`
+	Vni               int    `json:"vni,omitempty" bson:"vni,omitempty"`
 	PoolUuid          string `json:"poolUuid" bson:"poolUuid"`
 	Name              string `json:"name" bson:"name"`                                   //资源名称
 	Description       string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
-	ZoneUuid          string `json:"zoneUuid,omitempty" bson:"zoneUuid,omitempty"`       //区域UUID 若指定，云主机会在指定区域创建。
+	ZoneUuid          string `json:"zoneUuid" bson:"zoneUuid"`                           //区域UUID 若指定，云主机会在指定区域创建。
 	PhysicalInterface string `json:"physicalInterface" bson:"physicalInterface"`
-	Type              string `json:"type " bson:"type "`
+	Type              string `json:"type,omitempty" bson:"type,omitempty"`
 	ResourceUuid      string `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //资源UUID。若指定，镜像会使用该字段值作为UUID。
 }
 
 type CreateL2VxlanNetworkResponse struct {
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory L2VxlanNetworkPoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode                `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory AttachedVxlanNetworkRefs `json:"inventory" bson:"inventory"`
 }
 
 //查询VXLAN网络
@@ -66,8 +66,8 @@ type QueryL2VxlanNetworkRequest struct {
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 type QueryL2VxlanNetworkResponse struct {
-	Error       ErrorCode                     `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventories []L2VxlanNetworkPoolInventory `json:"inventories" bson:"inventories"`
+	Error       ErrorCode                  `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []AttachedVxlanNetworkRefs `json:"inventories" bson:"inventories"`
 }
 
 //创建普通二层网络
@@ -81,9 +81,9 @@ type CreateL2NoVlanNetworkRequest struct {
 type CreateL2NoVlanNetworkParams struct {
 	Name              string `json:"name" bson:"name"`                                   //资源名称
 	Description       string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
-	ZoneUuid          string `json:"zoneUuid,omitempty" bson:"zoneUuid,omitempty"`       //区域UUID 若指定，云主机会在指定区域创建。
+	ZoneUuid          string `json:"zoneUuid" bson:"zoneUuid"`                           //区域UUID 若指定，云主机会在指定区域创建。
 	PhysicalInterface string `json:"physicalInterface" bson:"physicalInterface"`
-	Type              string `json:"type " bson:"type "`
+	Type              string `json:"type,omitempty" bson:"type,omitempty"`
 	ResourceUuid      string `json:"resourceUuid,omitempty" bson:"resourceUuid,omitempty"` //资源UUID。若指定，镜像会使用该字段值作为UUID。
 }
 
@@ -111,8 +111,8 @@ type CreateL2VlanNetworkParams struct {
 }
 
 type CreateL2VlanNetworkResponse struct {
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory L2VxlanNetworkPoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory L2VlanNetworkInventory `json:"inventory" bson:"inventory"`
 }
 
 //查询二层VLAN网络
@@ -124,8 +124,8 @@ type QueryL2VlanNetworkRequest struct {
 }
 
 type QueryL2VlanNetworkResponse struct {
-	Error       ErrorCode                     `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventories []L2VxlanNetworkPoolInventory `json:"inventories" bson:"inventories"`
+	Error       ErrorCode                `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []L2VlanNetworkInventory `json:"inventories" bson:"inventories"`
 }
 
 //删除二层网络
@@ -150,8 +150,8 @@ type QueryL2NetworkRequest struct {
 }
 
 type QueryL2NetworkResponse struct {
-	Error       ErrorCode                     `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventories []L2VxlanNetworkPoolInventory `json:"inventories" bson:"inventories"`
+	Error       ErrorCode                `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventories []L2VlanNetworkInventory `json:"inventories" bson:"inventories"`
 }
 
 //更新二层网络
@@ -169,8 +169,8 @@ type UpdateL2NetworkParams struct {
 }
 
 type UpdateL2NetworkResponse struct {
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory L2VxlanNetworkPoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory L2VlanNetworkInventory `json:"inventory" bson:"inventory"`
 }
 
 //获取二层网络类型
@@ -195,8 +195,8 @@ type AttachL2NetworkToClusterRequest struct {
 }
 
 type AttachL2NetworkToClusterResponse struct {
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory L2VxlanNetworkPoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory L2VlanNetworkInventory `json:"inventory" bson:"inventory"`
 }
 
 //从集群上卸载二层网络
@@ -209,8 +209,8 @@ type DetachL2NetworkFromClusterRequest struct {
 }
 
 type DetachL2NetworkFromClusterResponse struct {
-	Error     ErrorCode                   `json:"error,omitempty" bson:"error,omitempty"` //错误信息
-	Inventory L2VxlanNetworkPoolInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode              `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory L2VlanNetworkInventory `json:"inventory" bson:"inventory"`
 }
 
 //创建Vni Range
@@ -308,4 +308,17 @@ type L2VxlanNetworkPoolInventory struct {
 	AttachedVtepRefs         []AttachedVtepRefs         `json:"attachedVtepRefs" bson:"attachedVtepRefs"`
 	AttachedVxlanNetworkRefs []AttachedVxlanNetworkRefs `json:"attachedVxlanNetworkRefs" bson:"attachedVxlanNetworkRefs"`
 	AttachedVniRanges        []VniRangeInventory        `json:"attachedVniRanges" bson:"attachedVniRanges"`
+}
+
+type L2VlanNetworkInventory struct {
+	Vlan                 int      `json:"vlan" bson:"vlan"`
+	UUID                 string   `json:"uuid" bson:"uuid"`               //资源的UUID，唯一标示该资源
+	Name                 string   `json:"name" bson:"name"`               //资源名称
+	Description          string   `json:"description" bson:"description"` //资源的详细描述
+	ZoneUuid             string   `json:"zoneUuid" bson:"zoneUuid"`       //区域UUID 若指定，云主机会在指定区域创建。
+	PhysicalInterface    string   `json:"physicalInterface" bson:"physicalInterface"`
+	Type                 string   `json:"type" bson:"type"`
+	CreateDate           string   `json:"createDate" bson:"createDate"` //创建时间
+	LastOpDate           string   `json:"lastOpDate" bson:"lastOpDate"` //最后一次修改时间
+	AttachedClusterUuids []string `json:"attachedClusterUuids" bson:"attachedClusterUuids"`
 }

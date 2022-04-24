@@ -255,13 +255,13 @@ type QueryUserGroupResponse struct {
 //更新用户组
 type UpdateUserGroupRequest struct {
 	ReqConfig
+	UUID            string                `json:"uuid" bson:"uuid"` //资源的UUID，唯一标示该资源
 	UpdateUserGroup UpdateUserGroupParams `json:"updateUserGroup" bson:"updateUserGroup"`
 	SystemTags      []string              `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags        []string              `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type UpdateUserGroupParams struct {
-	UUID        string `json:"uuid" bson:"uuid"`                                   //资源的UUID，唯一标示该资源
 	Name        string `json:"name,omitempty" bson:"name,omitempty"`               //资源名称
 	Description string `json:"description,omitempty" bson:"description,omitempty"` //详细描述
 }
@@ -564,7 +564,7 @@ type GetResourceNamesResponse struct {
 //查询共享资源
 type QuerySharedResourceRequest struct {
 	ReqConfig
-	UUIDS      []string `json:"uuids" bson:"uuids"`                               //资源的UUID，唯一标示该资源
+	UUID       string   `json:"uuid" bson:"uuid"`                                 //资源的UUID，唯一标示该资源
 	SystemTags []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
 	UserTags   []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
@@ -603,7 +603,7 @@ type ChangeResourceOwnerRequest struct {
 }
 
 type ChangeResourceOwnerParams struct {
-	ResourceUuid []string `json:"resourceUuid" bson:"resourceUuid"`
+	ResourceUuid string `json:"resourceUuid" bson:"resourceUuid"`
 }
 
 type ChangeResourceOwnerResponse struct {
@@ -619,7 +619,7 @@ type CheckApiPermissionRequest struct {
 }
 
 type CheckApiPermissionParams struct {
-	UserUuid string   `json:"userUuid" bson:"userUuid"` //用户UUID
+	UserUuid string   `json:"userUuid,omitempty" bson:"userUuid,omitempty"` //用户UUID
 	ApiNames []string `json:"apiNames" bson:"apiNames"`
 }
 
@@ -662,9 +662,10 @@ type RenewSessionResponse struct {
 //退出当前登录状态
 type LogOutRequest struct {
 	ReqConfig
-	SessionUuid string   `json:"sessionUuid" bson:"sessionUuid"`                   //会话uuid
-	SystemTags  []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags    []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	SessionUuid string                 `json:"sessionUuid" bson:"sessionUuid"` //会话uuid
+	ClientInfo  map[string]interface{} `json:"clientInfo" bson:"clientInfo"`
+	SystemTags  []string               `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags    []string               `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type LogOutResponse struct {

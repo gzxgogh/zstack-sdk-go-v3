@@ -47,8 +47,8 @@ type UpdateResourcePriceRequest struct {
 }
 
 type UpdateResourcePriceParams struct {
-	EndDateInLong                     int64  `json:"endDateInLong ,omitempty" bson:"endDateInLong ,omitempty"`                                         //资源价格生效截止时间
-	SetEndDateInLongBaseOnCurrentTime string `json:"setEndDateInLongBaseOnCurrentTime ,omitempty" bson:"setEndDateInLongBaseOnCurrentTime ,omitempty"` //设置资源价格生效截止时间为当前时间
+	EndDateInLong                     int64 `json:"endDateInLong ,omitempty" bson:"endDateInLong ,omitempty"`                                         //资源价格生效截止时间
+	SetEndDateInLongBaseOnCurrentTime bool  `json:"setEndDateInLongBaseOnCurrentTime ,omitempty" bson:"setEndDateInLongBaseOnCurrentTime ,omitempty"` //设置资源价格生效截止时间为当前时间
 }
 
 type UpdateResourcePriceResponse struct {
@@ -180,8 +180,8 @@ type AttachPriceTableToAccountRequest struct {
 }
 
 type AttachPriceTableToAccountResponse struct {
-	Inventory []PriceTableInventory `json:"inventory" bson:"inventory"`
-	Error     ErrorCode             `json:"error,omitempty" bson:"error,omitempty"` //错误信息
+	Inventory PriceTableInventory `json:"inventory" bson:"inventory"`
+	Error     ErrorCode           `json:"error,omitempty" bson:"error,omitempty"` //错误信息
 }
 
 //取消账户/项目关联的计费价目
@@ -202,10 +202,11 @@ type DetachPriceTableFromAccountResponse struct {
 //修改账户/项目计费价目
 type ChangeAccountPriceTableBindingRequest struct {
 	ReqConfig
-	AccountUuid string   `json:"accountUuid" bson:"accountUuid"`                   //账户UUID
-	TableUuid   string   `json:"tableUuid" bson:"tableUuid"`                       //价目表UUID
-	SystemTags  []string `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
-	UserTags    []string `json:"userTags,omitempty" bson:"userTags,omitempty"`
+	AccountUuid                    string                               `json:"accountUuid" bson:"accountUuid"` //账户UUID
+	TableUuid                      string                               `json:"tableUuid" bson:"tableUuid"`     //价目表UUID
+	ChangeAccountPriceTableBinding ChangeAccountPriceTableBindingParams `json:"changeAccountPriceTableBinding" bson:"changeAccountPriceTableBinding"`
+	SystemTags                     []string                             `json:"systemTags,omitempty" bson:"systemTags,omitempty"` //云主机系统标签
+	UserTags                       []string                             `json:"userTags,omitempty" bson:"userTags,omitempty"`
 }
 
 type ChangeAccountPriceTableBindingParams struct {
